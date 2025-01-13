@@ -3,6 +3,7 @@
         text-align: center;
         margin-top: 50px;
         background-color: rgb(137, 137, 137);
+        background-image: url('snow.gif');
       }
       .container{
         width: 1200px;
