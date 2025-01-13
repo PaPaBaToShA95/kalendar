@@ -102,7 +102,11 @@
           const congratsModal = document.getElementById("congratsModal");
           const congratsMessage = document.getElementById("congratsMessage");
           congratsMessage.textContent = `Вітаю, ${weeksCompleted} тиждень ти вже пройшов!`;
-          congratsModal.style.display = "block";
+
+          // Затримка перед відображенням модального вікна (на випадок, якщо проблема з рендерингом)
+          setTimeout(function () {
+            congratsModal.style.display = "block";
+          }, 100);
         }
       }
 
