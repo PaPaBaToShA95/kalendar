@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="apple-mobile-web-app-title" content="Календар для схуднення" />
-
     <link rel="stylesheet" href="style.css" />
     <link rel="apple-touch-icon" href="faviconiphone.webp" />
     <title>Календар для схуднення</title>
@@ -12,12 +11,15 @@
   </head>
   <body>
     <div class="container">
-      <h1>Challenge для схуднення - 75 днів</h1>
-      <p>Відмічай кожен день. Якщо пропустиш день, все починається спочатку!</p>
+      <h1>Challenge для схуднення - 62 дні</h1>
+      <p>
+        Відмічай кожен день. Відмова від: мучного, NonStope, цукор, молоко,
+        жирне та смажене!
+      </p>
       <div id="calendar" class="calendar"></div>
       <button id="resetButton" class="reset">Почати спочатку</button>
       <script>
-        const totalDays = 75;
+        const totalDays = 62;
         const calendarContainer = document.getElementById("calendar");
         const resetButton = document.getElementById("resetButton");
         let completedDays = 0;
@@ -48,6 +50,7 @@
                   "calendarProgress",
                   JSON.stringify(savedProgress)
                 );
+                checkWeeksCompleted(); // Додаємо виклик функції тут!
               } else {
                 alert("Пропущений день! Починай спочатку.");
                 resetCalendar();
@@ -72,5 +75,51 @@
         createCalendar();
       </script>
     </div>
+    <!-- Додаємо HTML структуру для модального вікна -->
+    <div id="congratsModal" class="modal">
+      <div class="modal-content">
+        <span id="closeModal" class="close">&times;</span>
+        <p id="congratsMessage"></p>
+      </div>
+    </div>
+
+    <audio id="tadaSound" src="tada.mp3"></audio>
+
+    <script>
+      let weeksCompleted = 0;
+
+      function checkWeeksCompleted() {
+        const currentWeek = Math.floor(completedDays / 7);
+
+        if (currentWeek > weeksCompleted) {
+          weeksCompleted = currentWeek;
+
+          // Програємо звук "тадам"
+          const tadaSound = document.getElementById("tadaSound");
+          tadaSound.play();
+
+          // Відображаємо модальне вікно з повідомленням
+          const congratsModal = document.getElementById("congratsModal");
+          const congratsMessage = document.getElementById("congratsMessage");
+          congratsMessage.textContent = `Вітаю, ${weeksCompleted} тиждень ти вже пройшов!`;
+          congratsModal.style.display = "block";
+        }
+      }
+
+      // Закриття модального вікна при натисканні на хрестик
+      const closeModal = document.getElementById("closeModal");
+      closeModal.addEventListener("click", function () {
+        const congratsModal = document.getElementById("congratsModal");
+        congratsModal.style.display = "none";
+      });
+
+      // Закриття модального вікна при кліку поза вікном
+      window.addEventListener("click", function (event) {
+        const congratsModal = document.getElementById("congratsModal");
+        if (event.target === congratsModal) {
+          congratsModal.style.display = "none";
+        }
+      });
+    </script>
   </body>
 </html>
