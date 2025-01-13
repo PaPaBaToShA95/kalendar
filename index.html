@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+
+    <title>Календар для схуднення</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Challenge для схуднення - 75 днів</h1>
+      <p>Відмічай кожен день. Якщо пропустиш день, все починається спочатку!</p>
+      <div id="calendar" class="calendar"></div>
+      <button id="resetButton" class="reset">Почати спочатку</button>
+      <script>
+        const totalDays = 75;
+        const calendarContainer = document.getElementById("calendar");
+        const resetButton = document.getElementById("resetButton");
+        let completedDays = 0;
+
+        // Завантаження стану календаря з LocalStorage
+        let savedProgress =
+          JSON.parse(localStorage.getItem("calendarProgress")) || [];
+
+        function createCalendar() {
+          calendarContainer.innerHTML = "";
+          for (let i = 1; i <= totalDays; i++) {
+            const dayElement = document.createElement("div");
+            dayElement.classList.add("day");
+            dayElement.textContent = i;
+
+            // Якщо день вже відмічений, додаємо клас 'completed'
+            if (savedProgress.includes(i)) {
+              dayElement.classList.add("completed");
+              completedDays++;
+            }
+
+            dayElement.addEventListener("click", function () {
+              if (completedDays + 1 === i) {
+                dayElement.classList.add("completed");
+                completedDays++;
+                savedProgress.push(i);
+                localStorage.setItem(
+                  "calendarProgress",
+                  JSON.stringify(savedProgress)
+                );
+              } else {
+                alert("Пропущений день! Починай спочатку.");
+                resetCalendar();
+              }
+            });
+
+            calendarContainer.appendChild(dayElement);
+          }
+        }
+
+        // Скидання календаря і очищення LocalStorage
+        function resetCalendar() {
+          completedDays = 0;
+          savedProgress = [];
+          localStorage.removeItem("calendarProgress");
+          createCalendar();
+          alert("У Вас не вийшло, спробуйте ще раз!");
+        }
+
+        resetButton.addEventListener("click", resetCalendar);
+
+        createCalendar();
+      </script>
+    </div>
+  </body>
+</html>
